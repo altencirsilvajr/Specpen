@@ -40,7 +40,7 @@
 
 @if (CanRenderComparisonTable)
 {
-    <section class="compare-ready-bar" aria-label="Comparacao pronta" aria-busy="@IsComparisonBusy">
+    <section class="compare-ready-bar" aria-label="Comparacao pronta" aria-busy="@(IsComparisonBusy ? "true" : "false")">
         <div class="compare-ready-copy">
             <strong>@Comparison.Phones.Count modelos prontos</strong>
             <span>@VisibleRows.Count specs visiveis no recorte atual</span>
@@ -56,7 +56,7 @@
 
 @if (!CanRenderComparisonTable || IsBuilderExpanded)
 {
-    <section class="compare-builder" aria-busy="@IsComparisonBusy">
+    <section class="compare-builder" aria-busy="@(IsComparisonBusy ? "true" : "false")">
         <div class="toolbar-search">
             <label for="compare-search">Buscar e adicionar modelos</label>
             <div class="search-input-shell">

@@ -154,7 +154,7 @@
 <section id="catalog-results"
          class="catalog-summary-line"
          tabindex="-1"
-         aria-busy="@IsCatalogBusy"
+         aria-busy="@(IsCatalogBusy ? "true" : "false")"
          aria-live="polite">
     <div>
         <strong>@ResultHeading</strong>
