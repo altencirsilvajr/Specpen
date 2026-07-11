@@ -28,7 +28,6 @@
             <div class="search-input-shell">
                 <input id="catalog-search"
                        @ref="SearchInputElement"
-                       value="@SearchText"
                        autocomplete="off"
                        autocapitalize="off"
                        autocorrect="off"
@@ -1033,6 +1032,7 @@ else
             ApplyCatalogResults(refresh.Phones);
             Suggestions = refresh.Suggestions;
             ResetSuggestionSelection();
+            await InvokeAsync(StateHasChanged);
         }
         catch (OperationCanceledException) when (debounceCts.IsCancellationRequested)
         {

@@ -33,7 +33,6 @@
             <div class="search-row">
                 <input id="home-search"
                        @ref="SearchInputElement"
-                       value="@SearchText"
                        autocomplete="off"
                        autocapitalize="off"
                        autocorrect="off"
@@ -438,6 +437,7 @@
 
             Suggestions = suggestions;
             ResetSuggestionSelection();
+            await InvokeAsync(StateHasChanged);
         }
         catch (OperationCanceledException) when (debounceCts.IsCancellationRequested)
         {

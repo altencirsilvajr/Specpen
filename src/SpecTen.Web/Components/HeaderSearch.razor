@@ -16,7 +16,6 @@
         <div class="search-input-shell topbar-search-row">
             <input id="topbar-search-input"
                    @ref="SearchInputElement"
-                   value="@SearchText"
                    autocomplete="off"
                    autocapitalize="off"
                    autocorrect="off"
@@ -193,6 +192,7 @@
 
             Suggestions = suggestions;
             ResetSuggestionSelection();
+            await InvokeAsync(StateHasChanged);
         }
         catch (OperationCanceledException) when (debounceCts.IsCancellationRequested)
         {
