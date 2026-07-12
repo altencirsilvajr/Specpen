@@ -161,7 +161,7 @@ public sealed class ApiSmokeTests(SpecTenWebApplicationFactory factory)
     }
 
     [Fact]
-    public async Task SearchApi_RefreshesStaleExactCatalogMatch_OnDemand()
+    public async Task SearchApi_ReturnsStaleExactCatalogMatchWithoutBlockingForRefresh()
     {
         await using var staleFactory = new SpecTenWebApplicationFactory(new Dictionary<string, string?>
         {
@@ -196,13 +196,14 @@ public sealed class ApiSmokeTests(SpecTenWebApplicationFactory factory)
 
         Assert.NotNull(results);
         Assert.NotEmpty(results!);
-        Assert.Contains(expectedKey, TestDeviceCoverageService.ObservedRequests());
+        Assert.DoesNotContain(expectedKey, TestDeviceCoverageService.ObservedRequests());
     }
 
     [Fact]
-    public async Task SearchApi_HydratesExactCoverageResult_WhenFullCatalogDoesNotHaveTheModel()
+    public async Task SearchApi_ReturnsExactCoverageResultWithoutBlockingForHydration()
     {
         var client = factory.CreateClient();
+        TestDeviceCoverageService.ResetObservedRequests();
 
         var results = await client.GetFromJsonAsync<List<PhoneSearchResult>>("/api/search?query=vivo%20x300%20ultra");
 
@@ -210,9 +211,10 @@ public sealed class ApiSmokeTests(SpecTenWebApplicationFactory factory)
         var phone = Assert.Single(results!);
         Assert.Equal("Vivo", phone.Brand);
         Assert.Equal("X300 Ultra", phone.Name);
-        Assert.True(phone.HasFullCatalogEntry);
-        Assert.False(string.IsNullOrWhiteSpace(phone.ImageUrl));
-        Assert.True(phone.SpecCount >= 6);
+        Assert.False(phone.HasFullCatalogEntry);
+        Assert.Null(phone.ImageUrl);
+        Assert.Equal(0, phone.SpecCount);
+        Assert.Empty(TestDeviceCoverageService.ObservedRequests());
     }
 
     [Fact]
